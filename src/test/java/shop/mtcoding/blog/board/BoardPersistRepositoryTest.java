@@ -1,9 +1,11 @@
 package shop.mtcoding.blog.board;
 
+import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -16,6 +18,18 @@ public class BoardPersistRepositoryTest {
     @Autowired // DI
     private BoardPersistRepository boardPersistRepository;
 
+    @Autowired
+    private EntityManager em;
+
+    @Test
+    public void deleteById_test() {
+        // given
+        int id = 1;
+
+        // when
+        boardPersistRepository.deleteById(id);
+    }
+
     @Test
     public void findById_test() {
         // given
@@ -23,8 +37,9 @@ public class BoardPersistRepositoryTest {
 
         // when
         Board board = boardPersistRepository.findById(id);
+        boardPersistRepository.findById(id);
 
-        System.out.println("findById_test "+board);
+        System.out.println("findById_test " + board);
 
         // then
         assertThat(board.getTitle()).isEqualTo("제목1");
@@ -48,13 +63,13 @@ public class BoardPersistRepositoryTest {
     }
 
     @Test
-    public void save_test(){
+    public void save_test() {
         // given
         Board board = new Board("제목5", "내용5", "ssar");
 
         // when
         boardPersistRepository.save(board);
-        System.out.println("save_test : "+board);
+        System.out.println("save_test : " + board);
 
         // then
     }
