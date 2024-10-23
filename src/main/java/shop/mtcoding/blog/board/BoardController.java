@@ -14,6 +14,7 @@ import java.util.List;
 public class BoardController {
 
     private final BoardNativeRepository boardNativeRepository;
+    private final BoardPersistRepository boardPersistRepository;
 
     @PostMapping("/board/{id}/update")
     public String update(@PathVariable Integer id, String title, String content, String username){
@@ -36,14 +37,14 @@ public class BoardController {
     }
 
     @PostMapping("/board/save")
-    public String save(String title, String content, String username){
-        boardNativeRepository.save(title, content, username);
+    public String save(BoardRequest.SaveDTO requestDTO){
+        boardPersistRepository.save(requestDTO.toEntity());
         return "redirect:/";
     }
 
     @GetMapping("/" )
     public String index(HttpServletRequest request) {
-        List<Board> boardList = boardNativeRepository.findAll();
+        List<Board> boardList = boardPersistRepository.findAll();
         request.setAttribute("boardList", boardList);
         return "index";
     }
@@ -55,7 +56,7 @@ public class BoardController {
 
     @GetMapping("/board/{id}")
     public String detail(@PathVariable Integer id, HttpServletRequest request) {
-        Board board = boardNativeRepository.findById(id);
+        Board board = boardPersistRepository.findById(id);
         request.setAttribute("board", board);
         return "board/detail";
     }
