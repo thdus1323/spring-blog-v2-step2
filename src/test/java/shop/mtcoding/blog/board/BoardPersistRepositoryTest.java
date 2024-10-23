@@ -65,4 +65,16 @@ class BoardPersistRepositoryTest {
         assertThat(board.getTitle()).isEqualTo("제목1");
         assertThat(board.getContent()).isEqualTo("내용1");
     }
+
+    @Test
+    public void deleteByIdV2_test(){
+        int id = 1;
+
+        boardPersistRepository.deleteByIdV2(id);
+
+        em.flush();
+
+        Board board = boardPersistRepository.findById(id);
+        System.out.println("findById_test " + board);
+    }
 }
